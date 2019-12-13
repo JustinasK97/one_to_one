@@ -3,6 +3,7 @@ from bank.costumer import costumer
 from bank.bankTransaction import bankTransaction
 
 
+
 def open_connection():
     connection = sqlite3.connect("transactions.db")
     cursor = connection.cursor()
@@ -26,6 +27,8 @@ def create_costumer_table():
 
         cursor.execute(query)
 
+        connection.commit()
+
     except sqlite3.DatabaseError as error:
         print(error)
 
@@ -36,7 +39,7 @@ def create_costumer_table():
 def create_bankTransaction_table():
     try:
         connection, cursor = open_connection()
-        query = """CTREATE TABLE IF NOT EXISTS bankTransaction(
+        query = """CREATE TABLE IF NOT EXISTS bankTransaction(
                     transaction_id PRIMARY KEY AUTOINCREMENT,
                     date DOUBLE,
                     account_number TEXT UNIQUE,
@@ -46,6 +49,8 @@ def create_bankTransaction_table():
 
 
         cursor.execute(query)
+
+        connection.commit()
 
     except sqlite3.DatabaseError as error:
         print(error)
@@ -77,7 +82,7 @@ def query_database(query, params=None):
 
 
 def create_costumer(costumer):
-    query = "INSERT INTO costumer VALUE (?, ?, ?, ?)"
+    query = "INSERT INTO costumer VALUES (?, ?, ?, ?)"
     params = (costumer.costumer_id, costumer.name, costumer.last_name, costumer.personal_code)
     query_database(query, params)
 
